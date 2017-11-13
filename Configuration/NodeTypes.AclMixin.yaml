@@ -8,7 +8,7 @@
         inspector:
           group: visibility
           position: 100
-          editor: Content/Inspector/Editors/SelectBoxEditor
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
           editorOptions:
             dataSourceIdentifier: punktde-noderestrictions-roles
 
