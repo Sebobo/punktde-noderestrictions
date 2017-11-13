@@ -3,8 +3,13 @@
 namespace PunktDe\NodeRestrictions\Security\Authorization\Privilege\Node\Doctrine;
 
 /*
- *  (c) 2017 punkt.de GmbH - Karlsruhe, Germany - http://punkt.de
- *  All rights reserved.
+ * This file is part of the PunktDe.NodeRestrictions package.
+ *
+ * (c) punkt.de 2017
+ *
+ * This package is Open Source Software. For the full copyright and license
+ * information, please view the LICENSE file which was distributed with this
+ * source code.
  */
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;

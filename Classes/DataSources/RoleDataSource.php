@@ -3,9 +3,9 @@
 namespace PunktDe\NodeRestrictions\DataSources;
 
 /*
- * This file is part of the DL.Gallery package.
+ * This file is part of the PunktDe.NodeRestrictions package.
  *
- * (c) Daniel Lienert 2016
+ * (c) punkt.de 2017
  *
  * This package is Open Source Software. For the full copyright and license
  * information, please view the LICENSE file which was distributed with this
