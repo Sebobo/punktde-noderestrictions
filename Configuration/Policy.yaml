@@ -1,0 +1,19 @@
+privilegeTargets:
+  'PunktDe\NodeRestrictions\Security\Authorization\Privilege\Node\ReadNodePrivilege':
+    'PunktDe.NodeRestrictions:RestrictNodeToRole':
+      matcher: 'hasNodeProperty("accessRestriction") && !hasEmptyProperty("accessRestriction") && !(nodePropertyIs("accessRestriction", "context.additionalUserInformation.firstDynamicRole") || parentNodePropertyIs("accessRestriction", "context.additionalUserInformation.firstDynamicRole"))'
+
+roles:
+
+  'PunktDe.NodeRestrictions:DynamicRole':
+    abstract: true
+    privileges:
+      -
+        privilegeTarget: 'PunktDe.NodeRestrictions:RestrictNodeToRole'
+        permission: GRANT
+
+  'Neos.Neos:AbstractEditor':
+    privileges:
+      -
+        privilegeTarget: 'PunktDe.NodeRestrictions:RestrictNodeToRole'
+        permission: GRANT

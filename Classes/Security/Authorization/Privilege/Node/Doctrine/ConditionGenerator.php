@@ -13,10 +13,13 @@ namespace PunktDe\NodeRestrictions\Security\Authorization\Privilege\Node\Doctrin
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\ConjunctionGenerator;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\FalseConditionGenerator;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\NotExpressionGenerator;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\PropertyConditionGenerator;
 use Neos\ContentRepository\Security\Authorization\Privilege\Node\Doctrine\ConditionGenerator as NeosContentRepositoryConditionGenerator;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlGeneratorInterface;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\TrueConditionGenerator;
 
 /**
  * {@inheritdoc}
@@ -37,7 +40,28 @@ class ConditionGenerator extends NeosContentRepositoryConditionGenerator
             return new FalseConditionGenerator();
         }
 
+        $value = $propertyConditionGenerator->getValueForOperand($value);
+
         return $propertyConditionGenerator->like('%"' . trim($property) . '": ' . json_encode($value) . '%');
+    }
+
+    /**
+     * @param string $property
+     * @param mixed $value
+     *
+     * @return SqlGeneratorInterface
+     */
+    public function nodePropertyIn($property, $value)
+    {
+        $propertyConditionGenerator = new PropertyConditionGenerator('properties');
+
+        if (!is_string($property) || is_array($value)) {
+            return new FalseConditionGenerator();
+        }
+
+        $value = $propertyConditionGenerator->getValueForOperand($value);
+
+        return $propertyConditionGenerator->in($value);
     }
 
     /**
@@ -52,5 +76,49 @@ class ConditionGenerator extends NeosContentRepositoryConditionGenerator
         $subQueryGenerator = new ParentNodePropertyGenerator($propertiesConditionGenerator);
 
         return $subQueryGenerator;
+    }
+
+    /**
+     * @param string $property
+     * @param mixed $value
+     *
+     * @return SqlGeneratorInterface
+     */
+    public function parentNodePropertyIn($property, $value)
+    {
+        $propertiesConditionGenerator = $this->nodePropertyIn($property, $value);
+        $subQueryGenerator = new ParentNodePropertyGenerator($propertiesConditionGenerator);
+
+        return $subQueryGenerator;
+    }
+
+    /**
+     * @param $property
+     * @return SqlGeneratorInterface
+     */
+    public function hasNodeProperty($property)
+    {
+        $propertyConditionGenerator = new PropertyConditionGenerator('properties');
+
+        if (!is_string($property)) {
+            return new FalseConditionGenerator();
+        }
+
+        return $propertyConditionGenerator->like('%"' . trim($property) . '": "%');
+    }
+
+    /**
+     * @param $property
+     * @return SqlGeneratorInterface
+     */
+    public function hasEmptyProperty($property)
+    {
+        $propertyConditionGenerator = new PropertyConditionGenerator('properties');
+
+        if (!is_string($property)) {
+            return new FalseConditionGenerator();
+        }
+
+        return $propertyConditionGenerator->like('%"' . trim($property) . '": ""%');
     }
 }

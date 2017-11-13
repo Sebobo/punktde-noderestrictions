@@ -3,3 +3,9 @@ PunktDe:
     excludeRolesFromPackages:
       - Neos.Neos
       - Neos.Setup
+
+Neos:
+  Flow:
+    aop:
+      globalObjects:
+        additionalUserInformation: PunktDe\NodeRestrictions\Service\UserService
